@@ -20,27 +20,19 @@ app.use(
   })
 );
 
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 200,
-    message: 'Too many requests from this IP.',
-  })
-);
-
 app.use(express.json({ limit: '10kb' }));
+
 app.use('/auth', require('./routes/auth'));
 app.use('/products', require('./routes/products'));
 app.use('/orders', require('./routes/orders'));
 app.use('/users', require('./routes/users'));
 app.use('/hero', require('./routes/hero'));
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 app.use((err, req, res, _next) => {
   console.error(err);
-  const status = err.statusCode || 500;
-  res.status(status).json({
+  res.status(err.statusCode || 500).json({
     status: 'error',
     message: err.message || 'Internal server error',
   });
