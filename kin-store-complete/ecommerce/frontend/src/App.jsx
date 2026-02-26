@@ -1,4 +1,3 @@
-// frontend/src/App.jsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -21,17 +20,7 @@ import AdminUsers from './pages/admin/Users';
 
 import Navbar from './components/shared/Navbar';
 
-function AdminRoute({ children, superOnly = false }) {
-  const { user, isAdmin, isSuperAdmin, loading } = useAuth();
-  if (loading) return <div className="h-screen flex items-center justify-center">Loading…</div>;
-  if (!user || (!isAdmin && !superOnly)) return <Navigate to="/" />;
-  if (superOnly && !isSuperAdmin) return <Navigate to="/admin" />;
-  return children;
-}
-
 function AppRoutes() {
-  const { adminView, isAdmin } = useAuth();
-
   return (
     <>
       <Navbar />
@@ -43,12 +32,12 @@ function AppRoutes() {
         <Route path="/track" element={<OrderTracking />} />
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-        <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
-        <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
-        <Route path="/admin/hero" element={<AdminRoute><AdminHeroSlides /></AdminRoute>} />
-        <Route path="/admin/users" element={<AdminRoute superOnly><AdminUsers /></AdminRoute>} />
+        {/* Admin Routes - Protection Temporarily Removed for Access */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/admin/hero" element={<AdminHeroSlides />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
